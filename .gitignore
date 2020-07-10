@@ -4,7 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-
+**/out/
+*/build/
 ### STS ###
 .apt_generated
 .classpath
@@ -20,8 +21,7 @@ build/
 *.iml
 *.ipr
 out/
-**/out/
-**/build/
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,4 +31,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
