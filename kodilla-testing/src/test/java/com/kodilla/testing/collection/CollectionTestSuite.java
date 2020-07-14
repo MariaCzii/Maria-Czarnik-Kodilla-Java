@@ -27,7 +27,7 @@ public class CollectionTestSuite {
         List<Integer> resultList = oddNumbersExterminator.exterminate(emptyList);
         System.out.println("Testing empty list");
         //Then
-        Assert.assertEquals(emptyList, resultList);
+        Assert.assertTrue(resultList.isEmpty());
         System.out.println("List is empty");
     }
 
@@ -36,21 +36,22 @@ public class CollectionTestSuite {
         //Given
         OddNumbersExterminator oddNumbersExterminator = new OddNumbersExterminator();
         ArrayList<Integer> normalList = new ArrayList<>();
-        ArrayList<Integer> expectedList = new ArrayList<>();
         normalList.add(5);
         normalList.add(6);
         normalList.add(16);
         normalList.add(8);
         normalList.add(5);
-        expectedList.add(6);
-        expectedList.add(16);
-        expectedList.add(8);
+
 
         //When
         List<Integer> resultList = oddNumbersExterminator.exterminate(normalList);
         System.out.println("Testing normal list");
 
         //Then
+        ArrayList<Integer> expectedList = new ArrayList<>();
+        expectedList.add(6);
+        expectedList.add(16);
+        expectedList.add(8);
         Assert.assertEquals(expectedList, resultList);
         System.out.println("Odd numbers expected: " + expectedList + "\n Numbers found after test :" + resultList);
     }
