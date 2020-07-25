@@ -1,40 +1,39 @@
 package com.kodilla.stream;
 
-import com.kodilla.stream.beautifier.PoemBeautifier;
-import com.kodilla.stream.iterate.NumbersGenerator;
-import com.kodilla.stream.lambda.ExpressionExecutor;
-import com.kodilla.stream.lambda.Processor;
+import com.kodilla.stream.book.Book;
+import com.kodilla.stream.book.BookDirectory;
+import com.kodilla.stream.forumuser.Forum;
+import com.kodilla.stream.forumuser.ForumUser;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StreamMain {
     public static void main(String[] args) {
-        Processor processor = new Processor();
-        processor.execute(() -> System.out.println("This is an example text."));
-        ExpressionExecutor expressionExecutor = new ExpressionExecutor();
 
-        expressionExecutor.executeExpression(10, 5, (a, b) -> a + b);
-        expressionExecutor.executeExpression(10, 5, (a, b) -> a - b);
-        expressionExecutor.executeExpression(10, 5, (a, b) -> a / b);
-        expressionExecutor.executeExpression(10, 5, (a, b) -> a * b);
-        expressionExecutor.executeExpression(10, 5, (a, b) -> a % b);
+        Forum forum = new Forum();
 
-        PoemBeautifier poemBeautifier = new PoemBeautifier();
-        String beautifulText = poemBeautifier.beautify("Beautiful text", (text ->  text.toUpperCase()));
-        System.out.println(beautifulText);
+        Map <Integer, ForumUser> mapOfUsers = forum.getForumUserList().stream()
+                .filter(forumUser -> forumUser.getUserSex() == 'M')
+                .filter(forumUser -> Period.between(forumUser.getDateOfBirth(), LocalDate.now()).getYears()>=20)
+                .filter(forumUser -> forumUser.getNumberOfPosts()>=1)
+                .collect(Collectors.toMap(ForumUser::getUserId, ForumUser -> ForumUser));
 
-        String beautifulText2 = poemBeautifier.beautify("Beautiful text", (text ->  text.toLowerCase()));
-        System.out.println(beautifulText2);
+        mapOfUsers.entrySet().stream()
+                .map(entry -> entry.getKey() + ":" + entry.getValue())
+                .forEach(System.out::println);
 
-        String beautifulText3 = poemBeautifier.beautify("Beautiful text", (text -> "ABC" + text + "ABC" ));
-        System.out.println(beautifulText3);
 
-        String beautifulText4 = poemBeautifier.beautify("Beautiful text", (text ->
-                text.concat(String.valueOf(text.hashCode()))));
-        System.out.println(beautifulText4);
 
-        String beautifulText5 = poemBeautifier.beautify("Beautiful text", (text ->  text.replaceAll(text, "Brak tekstu")));
-        System.out.println(beautifulText5);
-
-        System.out.println("Using Stream to generate even numbers from 1 to 20");
-        NumbersGenerator.generateEven(20);
+//        BookDirectory theBookDirectory = new BookDirectory();
+//        String theResultStringOfBooks = theBookDirectory.getList().stream()
+//                .filter(book -> book.getYearOfPublication() > 2005)
+//                .map(Book::toString)
+//                .collect(Collectors.joining(",\n","<<",">>"));
+//
+//        System.out.println(theResultStringOfBooks);
     }
 }
+
