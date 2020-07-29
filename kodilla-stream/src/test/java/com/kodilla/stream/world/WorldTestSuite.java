@@ -16,13 +16,13 @@ public class WorldTestSuite {
         Continent africa = new Continent("Africa");
         Continent america = new Continent("America");
 
-        Country germany = new Country("Germany");
-        Country poland = new Country("Poland");
-        Country denmark = new Country("Denmark");
-        Country kenya = new Country("Kenya");
-        Country somalia = new Country("Somalia");
-        Country usa = new Country("USA");
-        Country canada = new Country("Canada");
+        Country germany = new Country("Germany", BigDecimal.valueOf(10000000));
+        Country poland = new Country("Poland", new BigDecimal("10000000"));
+        Country denmark = new Country("Denmark", new BigDecimal("459000"));
+        Country kenya = new Country("Kenya", new BigDecimal("765432"));
+        Country somalia = new Country("Somalia", BigDecimal.valueOf(560009));
+        Country usa = new Country("USA",  BigDecimal.valueOf(1000000020));
+        Country canada = new Country("Canada",new BigDecimal("345678"));
 
 
         world.addContinent(europe);
@@ -44,7 +44,7 @@ public class WorldTestSuite {
 
         BigDecimal totalPeople = world.getPeopleQuantity();
         //Then
-        BigDecimal totalPeopleExpected = new BigDecimal("70000007");
+        BigDecimal totalPeopleExpected = new BigDecimal("1022130139");
         Assert.assertEquals(totalPeopleExpected, totalPeople);
     }
 }

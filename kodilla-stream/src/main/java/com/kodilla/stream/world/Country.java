@@ -7,13 +7,9 @@ public final class Country {
     private  final String countryName;
     private final BigDecimal peopleQty;
 
-    public Country(String countryName, BigDecimal peopleQty) {
+    public Country (String countryName, BigDecimal peopleQty) {
         this.countryName = countryName;
         this.peopleQty = peopleQty;
-    }
-
-    public Country(final  String countryName){
-        this(countryName, new BigDecimal("10000001"));
     }
 
     @Override
