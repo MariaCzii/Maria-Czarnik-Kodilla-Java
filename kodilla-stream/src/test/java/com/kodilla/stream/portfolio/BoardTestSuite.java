@@ -4,6 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static jdk.nashorn.internal.objects.NativeArray.reduce;
 
 public class BoardTestSuite {
     public Board prepareTestData() {
@@ -77,4 +83,57 @@ public class BoardTestSuite {
         //Then
         Assert.assertEquals(3, project.getTaskLists().size());
     }
+
+    @Test
+    public void testAddTaskListFindUsersTasks() {
+        //Given
+        Board project = prepareTestData();
+        //When
+        User user = new User("developer1", "John Smith");
+        List<Task> tasks = project.getTaskLists().stream()
+                .flatMap(l -> l.getTasks().stream())
+                .filter(t -> t.getAssignedUser().equals(user))
+                .collect(toList());
+        //Then
+        Assert.assertEquals(2, tasks.size());
+        Assert.assertEquals(user, tasks.get(0).getAssignedUser());
+        Assert.assertEquals(user, tasks.get(1).getAssignedUser());
+    }
+
+    @Test
+    public void testAddTaskListAverageWorkingOnTask() {
+        //Given
+        Board project = prepareTestData();
+        //When
+        List<TaskList> inProgress = new ArrayList<>();
+        inProgress.add(new TaskList("In progress"));
+
+        int sumOfDays = project.getTaskLists().stream()
+                .filter(inProgress::contains)
+                .flatMap(tl -> tl.getTasks().stream())
+                .map(task -> Period.between(task.getCreated(), LocalDate.now()).getDays())
+                .reduce(0, (sum, current) -> sum += current);
+
+        int tasksQty = project.getTaskLists().stream()
+                .filter(inProgress::contains)
+                .flatMap(tl -> tl.getTasks().stream())
+                .map(task -> Period.between(task.getCreated(), LocalDate.now()).getDays())
+                .map(t -> 1)
+                .reduce(0, (sum, current) -> sum += current);
+
+        double average = sumOfDays / tasksQty;
+
+        double avg = project.getTaskLists().stream()
+                .filter(inProgress::contains)
+                .flatMap(tl -> tl.getTasks().stream())
+                .map(task -> Period.between(task.getCreated(), LocalDate.now()).getDays())
+                .mapToInt(Integer::intValue)
+                .average()
+                .getAsDouble();
+
+        //Then
+        Assert.assertEquals(10.0, average, 0.0001);
+        Assert.assertEquals(10.0, avg, 0.0001);
+    }
+
 }
